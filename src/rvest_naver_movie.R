@@ -1,9 +1,12 @@
 rm(list = ls())
 gc(reset = T)
 
-library(rvest)
-library(httr)
-library(stringr)
+if(!require(rvest)) install.packages('rvest')
+if(!require(httr)) install.packages('httr')
+if(!require(stringr)) install.packages('stringr')
+require(rvest)
+require(httr)
+require(stringr)
 
 rm(list = ls())
 gc(reset = T)
