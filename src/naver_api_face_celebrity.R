@@ -1,11 +1,9 @@
 rm(list=ls())
 gc(reset= T)
 
-if(!require(jpeg)) install.packages('jpeg')
 if(!require(httr)) install.packages('httr')
 if(!require(rvest)) install.packages('rvest')
 if(!require(jsonlite)) install.packages('jsonlite')
-require(jpeg)
 require(httr)
 require(rvest)
 require(jsonlite)
