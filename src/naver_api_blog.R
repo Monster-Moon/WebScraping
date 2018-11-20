@@ -3,6 +3,8 @@ gc(reset= T)
 
 if(!require(httr)) install.packages('httr')
 if(!require(rvest)) install.packages('rvest')
+require(httr)
+require(rvest)
 
 end_num = 10
 display_num = 10
