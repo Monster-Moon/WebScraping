@@ -7,7 +7,6 @@ if(!require(dplyr)) install.packages('dplyr'); require(dplyr)
 if(!require(stringr)) install.packages('stringr'); require(stringr)
 if(!require(jsonlite)) install.packages('jsonlite'); require(jsonlite)
 
-
 .naver_tmp_fun = function(x, pages_, sleep_)
 {
   search_data = NULL
@@ -19,14 +18,14 @@ if(!require(jsonlite)) install.packages('jsonlite'); require(jsonlite)
       html_nodes('script#__NEXT_DATA__') %>% 
       html_text() %>%
       fromJSON()
-    url_addr_tmp
-    url_json$props$pageProps$initialState$products$list$item$
+    
     tmp = cbind(
       url_json$props$pageProps$initialState$products$list$item$productName,
       url_json$props$pageProps$initialState$products$list$item$mallName,
       url_json$props$pageProps$initialState$products$list$item$maker,
       url_json$props$pageProps$initialState$products$list$item$lowPrice,
       url_json$props$pageProps$initialState$products$list$item$reviewCount,
+      url_json$props$pageProps$initialState$products$list$item$purchaseCnt,
       url_json$props$pageProps$initialState$products$list$item$mallProductUrl,
       # url_json$props$pageProps$initialState$products$list$item$overseaTp,
       url_json$props$pageProps$initialState$products$list$item$category1Name,
@@ -34,10 +33,12 @@ if(!require(jsonlite)) install.packages('jsonlite'); require(jsonlite)
       url_json$props$pageProps$initialState$products$list$item$category3Name,
       url_json$props$pageProps$initialState$products$list$item$category4Name,
       substr(url_json$props$pageProps$initialState$products$list$item$openDate, 1, 8),
-      gsub('\\|\\|', '', url_json$props$pageProps$initialState$products$list$item$dlvryCont)) %>% data.frame()
+      gsub('\\|\\|', '', url_json$props$pageProps$initialState$products$list$item$dlvryCont)) %>% 
+      data.frame()
+    
     if(page_inx >= 2)
     {
-      if(search_data$X6[nrow(search_data)] == tmp$X6[nrow(tmp)] | nrow(tmp) == 0) break
+      if(search_data$X7[nrow(search_data)] == tmp$X7[nrow(tmp)] | nrow(tmp) == 0) break
     }
     search_data = rbind(search_data, tmp)
     cat(page_inx, '\n')
@@ -52,16 +53,14 @@ if(!require(jsonlite)) install.packages('jsonlite'); require(jsonlite)
     paste(., collapse = '%') %>% paste0('%', .) %>%
     toupper()
   
-  mall_seq = c(24, 114, 17703)
+  mall_seq = c('', 24, 114, 17703)
   site_list = lapply(mall_seq, function(x) paste0('https://search.shopping.naver.com/search/all?frm=NVSHOVS&mall=',
                                                   x, 
                                                   '&origQuery=pagingIndex=1&pagingSize=80&productSet=overseas&query=',
                                                   query_utf, 
                                                   '&sort=review&rel&timestamp=&viewType=list'))
-  
   return_data = lapply(site_list, .naver_tmp_fun, pages_ = pages, sleep_ = sleep)
-  # write.csv(search_data, paste0(query, '_', Sys.Date(), '.csv'))
-  
+  write.csv(search_data, paste0(query, '_', Sys.Date(), '.csv'))
 }
 
 naver_func = function(query, pages, sleep = 3)
@@ -76,9 +75,6 @@ gmarket_mall_search_func = function(data)
   url_vec = paste0('http://item.gmarket.co.kr/DetailView/Item.asp?', str_extract(data$X6, 'goodscode=[0-9]{1,}'))
   for(i in 1:nrow(data))
   {
-    # tmp_url = data$X6[i]
-    # tmp_url = paste0('http://item.gmarket.co.kr/DetailView/Item.asp?',
-    #                  str_split(tmp_url, '\\?')[[1]][2])
     tmp_url_get = GET(url_vec[i])
     if(tmp_url_get$status_code != 200) next;
     
