@@ -19,9 +19,8 @@ if(!require(jsonlite)) install.packages('jsonlite'); require(jsonlite)
       html_nodes('script#__NEXT_DATA__') %>% 
       html_text() %>%
       fromJSON()
-    names(url_json$props$pageProps$initialState$products$list$item)
-    gsub('\\|\\|', '', url_json$props$pageProps$initialState$products$list$item$dlvryCont)
-    
+    url_addr_tmp
+    url_json$props$pageProps$initialState$products$list$item$
     tmp = cbind(
       url_json$props$pageProps$initialState$products$list$item$productName,
       url_json$props$pageProps$initialState$products$list$item$mallName,
