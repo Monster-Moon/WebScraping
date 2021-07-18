@@ -60,7 +60,7 @@ if(!require(jsonlite)) install.packages('jsonlite'); require(jsonlite)
                                                   query_utf, 
                                                   '&sort=review&rel&timestamp=&viewType=list'))
   return_data = lapply(site_list, .naver_tmp_fun, pages_ = pages, sleep_ = sleep)
-  write.csv(search_data, paste0(query, '_', Sys.Date(), '.csv'))
+  # write.csv(search_data, paste0(query, '_', Sys.Date(), '.csv'))
 }
 
 naver_func = function(query, pages, sleep = 3)
